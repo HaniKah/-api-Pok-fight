@@ -1,8 +1,17 @@
 const express = require("express");
 
-const { createPokemons, deletePokemons } = require("../controllers/pokemons");
+const { 
+    getOnePokemon,
+    getAllPokemons
+} = require("../controllers/pokemons");
+
 const api = express.Router();
 
-api.route("/").post(createPokemons);
+// DEFAULT ROUTE   ---- PATH TO DISPLAY ALL POKEMON
+api.route("/").get(getAllPokemons);
+
+
+// ROUTE BY ID ----- PATH TO DISPLAY A SINGLE POKEMON BY ID
+api.route("/:id").get(getOnePokemon);
 
 module.exports = api;
