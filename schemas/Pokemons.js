@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const pokemonSchema = new mongoose.Schema({
   id: {
@@ -18,5 +19,7 @@ const pokemonSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+pokemonSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Pokemon", pokemonSchema);

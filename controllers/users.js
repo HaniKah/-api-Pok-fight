@@ -76,7 +76,7 @@ const checkUser = async (req, res) => {
     else if (user.password === password) {
       res.status(200).json({
         success: true,
-        msg: "login succesful",
+        data: user,
       });
     } else {
       res.status(401).json({
