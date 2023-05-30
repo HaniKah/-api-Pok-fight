@@ -39,52 +39,46 @@ const Pokemons = require("../schemas/Pokemons");
 // FUNCTION TO GET ALL THE POKEMON FROM OUR DB  ---- FETCH ALL
 const getAllPokemons = async (req, res) => {
   try {
-    const pokemons = await Pokemons.find()
-    res.status(200).json({success: true, data: pokemons})
-    // if (!pokemons.length) {
-    //   res.status(204).json({
-    //     success:false,
-    //     msg:"no data yet"
-    //   })
+    const page = Number(req.query.page);
 
-    //   }else{
-    //     res.status(200).json({
-    //       success: true,
-    //       msg: "Fetch Successfull!",
-    //       data: pokemons
-    //       })
-
-    //   }
-    }
-  catch (error) {
-    res.status(500).json({error}) 
+    const options = {
+      page: page,
+      limit: 20,
+    };
+    const pokemons = await Pokemons.paginate({}, options, (err, result) => {
+      if (err) {
+        res.status(500).json({ success: false, err });
+      } else {
+        res.status(200).json({ data: result.docs });
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
-  }
+};
 
 // FUNCTION TO GET 1 POKEMON FROM OUR DB --- FETCH ONE
 
-const getOnePokemon = async (req,res) => {
+const getOnePokemon = async (req, res) => {
   try {
     const { id } = req.params;
-    const pokemon = await Pokemons.findById(id)
+    const pokemon = await Pokemons.findById(id);
     if (pokemon) {
       return res.status(200).json({
-        success:true,
-        data:pokemon
-      })
-
-  }else{
-    res.status(404).json({
-      success:false,
-      msg:"pokemon not found"
-    })
+        success: true,
+        data: pokemon,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        msg: "pokemon not found",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
   }
-}
-  catch (error) {
-    res.status(500).json({error})
-  }
-}
-module.exports = { 
+};
+module.exports = {
   getAllPokemons,
-  getOnePokemon
+  getOnePokemon,
 };
