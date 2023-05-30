@@ -40,18 +40,38 @@ const Pokemons = require("../schemas/Pokemons");
 const getAllPokemons = async (req, res) => {
   try {
     const page = Number(req.query.page);
+    const search = req.query.search;
+    console.log(search);
 
-    const options = {
-      page: page,
-      limit: 20,
-    };
-    const pokemons = await Pokemons.paginate({}, options, (err, result) => {
-      if (err) {
-        res.status(500).json({ success: false, err });
+    if (search.length > 0) {
+      console.log(search);
+      const pokemons = await Pokemons.find({
+        name: { $regex: search, $options: "i" },
+      });
+      if (pokemons) {
+        return res.status(200).json({
+          success: true,
+          data: pokemons,
+        });
       } else {
-        res.status(200).json({ data: result.docs });
+        res.status(404).json({
+          success: false,
+          msg: "pokemon not found",
+        });
       }
-    });
+    } else {
+      const options = {
+        page: page,
+        limit: 20,
+      };
+      const pokemons = await Pokemons.paginate({}, options, (err, result) => {
+        if (err) {
+          res.status(500).json({ success: false, err });
+        } else {
+          res.status(200).json({ data: result.docs });
+        }
+      });
+    }
   } catch (err) {
     res.status(500).json({ error: err });
   }
