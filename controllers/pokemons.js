@@ -40,7 +40,7 @@ const Pokemons = require("../schemas/Pokemons");
 const getAllPokemons = async (req, res) => {
   try {
     const page = Number(req.query.page);
-    console.log(page);
+
     const options = {
       page: page,
       limit: 20,

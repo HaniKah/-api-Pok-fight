@@ -42,4 +42,6 @@ const pokemonSchema = new mongoose.Schema({
   },
 });
 
+pokemonSchema.plugin(mongoosePaginate);
+
 module.exports = mongoose.model("Pokemon_v2", pokemonSchema);
