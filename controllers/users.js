@@ -113,9 +113,16 @@ const updateScore = async (req, res) => {
     const { coins, score } = req.body;
     const { id } = req.params;
 
+    const existingPlayer = await Users.findById(id)
+    const updatedScore = Number(existingPlayer.score) + Number(score)
+    const updatedCoins = Number(existingPlayer.coins) + Number(coins)
+
     const player = await Users.findByIdAndUpdate(
       id,
-      { score: score, coins: coins },
+      { 
+        score: updatedScore,
+        coins: updatedCoins,
+      },
       { new: true }
     );
     if (!player) {
