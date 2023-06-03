@@ -44,7 +44,6 @@ const getAllPokemons = async (req, res) => {
     console.log(search);
 
     if (search.length > 0) {
-      console.log(search);
       const pokemons = await Pokemons.find({
         name: { $regex: search, $options: "i" },
       });
