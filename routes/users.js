@@ -22,7 +22,7 @@ api.route("/leaderboard").get(getAllUsers);
 
 api.route("/:id").get(getOneUser);
 
-// DEFAULT ROUTE   ---- PATH TO DISPLAY updated score
+// DEFAULT ROUTE   ---- PATH TO UPDATE updated score
 
 api.route("/arena/:id").put(updateScore);
 
