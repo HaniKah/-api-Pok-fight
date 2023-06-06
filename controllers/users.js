@@ -5,7 +5,7 @@ const Users = require("../schemas/Users");
 const createNewUser = async (req, res) => {
   try {
     console.log("body:", req.body);
-    const { user_name, email, password, coins, collections } = req.body;
+    const { user_name, email, password } = req.body;
     const user = await Users.findOne({ user_name: user_name });
     if (user) {
       res.status(409).json({
@@ -17,8 +17,9 @@ const createNewUser = async (req, res) => {
         user_name,
         email,
         password,
-        coins,
-        collections,
+        coins: 400,
+        score: 0,
+        collections: [],
       });
       res.status(201).json({
         success: true,
@@ -110,18 +111,19 @@ const getAllUsers = async (req, res) => {
 // UPDATE ONE USER INFO FROM THE USER DB   ---- UPDATE USER
 const updateScore = async (req, res) => {
   try {
-    const { coins, score } = req.body;
+    const { coins, score, collections } = req.body;
     const { id } = req.params;
 
-    const existingPlayer = await Users.findById(id)
-    const updatedScore = Number(existingPlayer.score) + Number(score)
-    const updatedCoins = Number(existingPlayer.coins) + Number(coins)
+    const existingPlayer = await Users.findById(id);
+    const updatedScore = Number(existingPlayer.score) + Number(score);
+    const updatedCoins = Number(existingPlayer.coins) + Number(coins);
 
     const player = await Users.findByIdAndUpdate(
       id,
-      { 
+      {
         score: updatedScore,
         coins: updatedCoins,
+        collections: collections,
       },
       { new: true }
     );
